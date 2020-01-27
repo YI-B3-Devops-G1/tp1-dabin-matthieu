@@ -67,13 +67,6 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    sed --in-place s/us/fr/g /etc/default/keyboard
-    apt-get update
-    apt-get install -y nginx openssh-server nodejs
-	reboot
-	sudo su
-	mv /var/www/html/index.nginx-debian.html /var/www/html/index.html
-	echo "<!DOCTYPE html> <html> <body> B3 Devops - TP 1 </body> </html> " > /var/www/html/index.html
-  SHELL
+  config.vm.provision "file", source: "index.html", destination: "/tmp/index.html"
+  config.vm.provision "shell", path: "bootstrap.sh"
 end
